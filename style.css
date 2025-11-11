@@ -12,13 +12,21 @@
 
 /*shared style*/
 
-.header {
+.header, .arbeidssøkere{
     max-width: 1140px;
     margin: 0 auto;
 }
 
 .display-flex {
     display: flex;
+}
+
+.center {
+    text-align: center;
+}
+
+.blue {
+    color: rgb(83, 83, 221);
 }
 
 .dark-grey {
@@ -70,4 +78,60 @@
 
 .navbar_link :hover{
     cursor: pointer;
+}
+
+/*banner section starts here*/
+
+.banner {
+    align-items: center;
+    margin-top: 130px;
+    justify-content: space-around;
+}
+
+.banner-desciption {
+    
+}
+
+.banner-heading {
+    font-size: 3rem;
+    font-style: 900;
+}
+
+.banner-paragraph {
+    font-size: 1.5rem;
+    max-width: 570px;
+    text-shadow: 0 1px 4px rgb(239, 238, 245);
+    
+}
+
+.banner-img {
+    max-width: 570px;
+    max-height: 355px;
+    border-radius: 1rem;
+    filter: drop-shadow(8px 8px 10px gray);
+}
+
+/*Vare Arbeidssøkere section starts*/
+
+.arbeidssøkere {
+    margin-top: 140px;
+}
+
+.arbeidssøkere-heading {
+    font-size: 3rem;
+    font-style: 900;
+}
+
+.arbeidssøkere-description {
+    font-size: 1.5rem;
+}
+
+.portfolio-containers {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.portfolio-container {
+    background-color: rgb(174, 227, 227);
 }
