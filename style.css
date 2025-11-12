@@ -12,7 +12,7 @@
 
 /*shared style*/
 
-.header, .arbeidssøkere{
+.header, .arbeidssøkere, .footer{
     max-width: 1140px;
     margin: 0 auto;
 }
@@ -55,8 +55,8 @@
 }
 
 .logo {
-    max-width: 15rem;
-    max-height: 10rem;
+    width: 15rem;
+    height: 10rem;
 }
 
 .navbar-items {
@@ -173,8 +173,7 @@
 .contact-form {
     margin-top: 0 auto;
     background-image: url(./Images/image/group.jpeg);
-    filter: contrast(50%);
-    /*-webkit-filter: blur(8px);*/
+    background-attachment: scroll;
     max-width: 100%;
     height: 500px;
     align-items: center;
@@ -204,9 +203,40 @@
  max-width: 100%;
 }
 
-.subscribe-form button {
+.subscribe-btn {
   padding: 10px;
   border: none;
   background-color: rgb(83, 83, 221);
   color: white;
 }
+
+.subscribe-btn:hover{
+ cursor: pointer;   
+}
+
+/*footer starts here*/
+.footer {
+  margin-top: 3.2rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.copyright{
+    font-size: 1.5rem;
+}
+
+.social-media {
+  gap: 2rem;
+}
+
+.fa-linkedin, .fa-facebook {
+  font-size: 30px;
+  color: rgb(9, 83, 211);
+}
+
+.fa-youtube, .fa-instagram {
+  font-size: 30px;
+  color: red;
+}
+
+
