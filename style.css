@@ -37,6 +37,10 @@
   color:rgba(137, 135, 161, 1)
 }
 
+.white {
+    color: whitesmoke;
+}
+
 
 
 
@@ -115,6 +119,7 @@
 
 .arbeidssøkere {
     margin-top: 140px;
+    margin-bottom: 120px;
 }
 
 .arbeidssøkere-heading {
@@ -133,5 +138,75 @@
 }
 
 .portfolio-container {
-    background-color: rgb(174, 227, 227);
+    border: 2px solid gray;
+    border-radius: 1rem;
+    padding: 10px 10px;
+}
+
+.deltakere-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+
+}
+
+.deltakere-name {
+    font-size: 1.2rem;
+}
+
+.deltakere-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.primary-btn {
+  background-color: rgb(83, 83, 221);;
+  border: none;
+  cursor: pointer;
+  color: white;
+  padding: 10px 20px;
+  width: 90%;
+}
+
+/* subscribe section starts*/
+
+.contact-form {
+    margin-top: 0 auto;
+    background-image: url(./Images/image/group.jpeg);
+    filter: contrast(50%);
+    /*-webkit-filter: blur(8px);*/
+    max-width: 100%;
+    height: 500px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.subscribe {
+    
+}
+
+.subscribe-heading {
+    font-size: 3rem;
+    font-weight: 400;
+}
+
+#email {
+  flex: 1;
+  padding:10px;
+  border: none;
+  outline: none;
+}
+
+.subscribe-form {
+ justify-content: center;
+ align-items: center;
+ max-width: 100%;
+}
+
+.subscribe-form button {
+  padding: 10px;
+  border: none;
+  background-color: rgb(83, 83, 221);
+  color: white;
 }
