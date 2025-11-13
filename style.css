@@ -172,17 +172,16 @@
 
 .contact-form {
     margin-top: 0 auto;
-    background-image: url(./Images/image/group.jpeg);
-    background-attachment: scroll;
-    max-width: 100%;
-    height: 500px;
-    align-items: center;
-    justify-content: center;
-    position: relative;
 }
 
-.subscribe {
-    
+.subscribe{
+    flex-direction: column;
+}
+
+.subscribe-img {
+    width: 100%;
+    height: 500px;
+    filter: grayscale(50%);
 }
 
 .subscribe-heading {
@@ -191,20 +190,21 @@
 }
 
 #email {
-  flex: 1;
+  flex: 0.7;
   padding:10px;
-  border: none;
   outline: none;
 }
 
 .subscribe-form {
+ margin: 0 auto;
  justify-content: center;
  align-items: center;
- max-width: 100%;
+ max-width: 70%;
+ padding: 0px 30px;
 }
 
 .subscribe-btn {
-  padding: 10px;
+  padding: 12px;
   border: none;
   background-color: rgb(83, 83, 221);
   color: white;
@@ -240,3 +240,102 @@
 }
 
 
+/*registreringsskjema starts here*/
+
+.registreringsskjema{
+  margin: 0 auto;
+  background-color: #acf3c0;
+  border-radius: 20px;
+  padding: 40px;
+  Width: 600px;
+}
+
+.registreringsskjema-heading {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.skjema{
+    justify-content: center;
+    align-items: center;
+}
+
+.skjema-name {
+    gap: 3.2rem;
+}
+
+.skjema label {
+  font-weight: bold;
+  margin-top: 15px;
+  display: block;
+}
+
+.skjema input[type="text"],
+.skjema input[type="email"],
+.skjema input[type="tel"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* Resume upload section */
+.upload-section {
+  margin-top: 20px;
+}
+
+.upload-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px dashed #a5c3f9;
+  border-radius: 8px;
+  height: 180px;
+  cursor: pointer;
+  color: #333;
+  text-align: center;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.upload-box:hover {
+  background-color: #f9fbff;
+  border-color: #5998ff;
+}
+
+.upload-box .choose {
+  color: #0066ff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.upload-box .limit {
+  color: gray;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+/* Hide real file input */
+.upload-box input[type="file"] {
+  display: none;
+}
+
+/* Submit button */
+input[type="submit"] {
+  background-color: #0066ff;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+input[type="submit"]:hover {
+  background-color: #004dcc;
+}
