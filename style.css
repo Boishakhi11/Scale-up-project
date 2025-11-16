@@ -322,6 +322,15 @@
 /* Hide real file input */
 .upload-box input[type="file"] {
   display: none;
+  
+}
+
+#pdf-preview-container {
+  border: 1px solid #e0e0e0;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+  background: #f9f9f9;
 }
 
 /* Submit button */
@@ -390,7 +399,33 @@ input[type="submit"]:hover {
 
 /*responsivness*/
 @media screen and (max-width: 576px) {
-  .navbar {
-    
+  .banner, .footer {
+    flex-direction: column;
+    gap: 1rem;
   }
+
+  .banner-desciption {
+    text-align: center;
+  }
+
+  .banner-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .portfolio-containers {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.registreringsskjema {
+  width: 400px;
+  margin: o auto;
+}
+
+.footer .logo {
+  display: none;
+}
 } 
