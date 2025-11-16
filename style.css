@@ -12,7 +12,7 @@
 
 /*shared style*/
 
-.header, .arbeidssøkere, .arbeiderer, .footer{
+.header, .arbeidssøkere, .arbeiderer, .technlologies, .footer{
     max-width: 1140px;
     margin: 0 auto;
 }
@@ -360,6 +360,7 @@ input[type="submit"]:hover {
   gap: 3rem;
 }
 
+
 .arbeider {
   display: flex;
   gap: 4rem;
@@ -397,6 +398,97 @@ input[type="submit"]:hover {
   max-width: 100%;
 }
 
+
+/*Portfolio of Boishakhi Starts here*/
+.name {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 50px 200px;
+}
+
+.about-candidate {
+  margin: 50px 200px;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+.candidate-info {
+  width: 500px;
+  height: 350px;
+}
+
+.gretings {
+  font-size: 1.5rem;
+}
+
+.candidate-name {
+  font-size: 2rem;
+}
+
+.about {
+  font-size: 1rem;
+}
+
+.second-btn {
+  padding: 11px 30px;
+  color: #004dcc;
+  border: 1px solid #004dcc;
+  cursor: pointer;
+;
+}
+
+.candidate-img {
+ width: 50%;
+ height: 500px;
+ border-radius: 30px;
+}
+
+/*about me starts*/
+.about-me {
+  height: 225px;
+  width: 650px;
+  margin: 140px auto;
+  border: 1px solid grey;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.information-containers {
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+
+/*resume-summary starts*/
+
+.resume-summary {
+  justify-content: space-between;
+}
+
+.experiences, .education {
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.experience {
+  width: 510px;
+  height: 130px;
+  padding: 10px 25px;
+}
+
+
+/*technologies section start*/
+.about-myinterest {
+   
+}
+
+.skills {
+  width: 267px;
+  height: 377px;
+}
+
 /*responsivness*/
 @media screen and (max-width: 576px) {
   .banner, .footer {
@@ -409,7 +501,6 @@ input[type="submit"]:hover {
   }
 
   .banner-gallery {
-    display: flex;
     flex-direction: column;
     gap: 10px;
     align-items: center;

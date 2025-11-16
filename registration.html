@@ -26,7 +26,7 @@
     <main class="registreringsskjema">
         <h2 class="center registreringsskjema-heading">Registreringsskjema for Digital Portefølje</h2>
         <div class="skjema display-flex">
-            <form action='upload.php' method='post' enctype='multipart/form-data'>
+            <form id="myForm" enctype="multipart/form-data">
                 <!--name-->
                 <label for="fname">Name </label><br>
                 <div class="display-flex skjema-name">
@@ -58,7 +58,7 @@
                 
                 <!-- File name will show here -->
                 <p id="file-name" style="margin-top: 10px; color: #0066ff; font-weight: bold;"></p>
-                </div>
+                
 
                 <!-- Submit -->
                  <div class="center">
@@ -83,7 +83,7 @@
     
 </body>
 <script>
-// Show file name
+// Show file name when selected
 document.getElementById("resume-upload").addEventListener("change", function(event) {
     const file = event.target.files[0];
     if (file) {
@@ -91,16 +91,17 @@ document.getElementById("resume-upload").addEventListener("change", function(eve
     }
 });
 
-// Handle Submit
+// Handle Submit (Frontend only)
 document.querySelector("form").addEventListener("submit", function(event) {
-    event.preventDefault(); // stop submit since no backend
+    event.preventDefault();  // Stop real submission
 
-    alert("Information added successfully!"); // shows popup
+    // *** This is the ONLY popup message ***
+    alert("Information added successfully!");
 
-    // Reset the entire form
+    // Reset the form
     this.reset();
 
-    // Clear file name display
+    // Clear the file name text
     document.getElementById("file-name").textContent = "";
 });
 </script>
