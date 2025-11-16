@@ -12,7 +12,7 @@
 
 /*shared style*/
 
-.header, .arbeidssøkere, .footer{
+.header, .arbeidssøkere, .arbeiderer, .footer{
     max-width: 1140px;
     margin: 0 auto;
 }
@@ -69,7 +69,7 @@
     font-size: 1rem;
 }
 
-.navbar-item :hover {
+.active, .navbar-item :hover {
     color: green;
     text-decoration: underline;
 }
@@ -339,3 +339,58 @@ input[type="submit"] {
 input[type="submit"]:hover {
   background-color: #004dcc;
 }
+
+
+/* Om Oss file starts here*/
+
+.arbeiderer {
+  margin-top: 140px;
+  margin-bottom: 120px;
+  max-width: 700px;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.arbeider {
+  display: flex;
+  gap: 4rem;
+  margin: 0 auto;
+  background-color: #c0dec9;
+  border: 2px solid gray; 
+  border-radius: 1rem;
+  padding: 20px 25px;
+  justify-content: center;
+  align-items: center;
+}
+
+.arbeider-heading {
+  text-align: center;
+  font-weight: 400;
+}
+.arbeider-img {
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+}
+
+.arbeider-title {
+  text-align: center;
+  font-weight: 400;
+  text-decoration: underline;
+}
+
+.arbeider-description {
+  font-size: 1rem;
+  color: grey;
+}
+
+.partner-img {
+  max-width: 100%;
+}
+
+/*responsivness*/
+@media screen and (max-width: 576px) {
+  .navbar {
+    
+  }
+} 
