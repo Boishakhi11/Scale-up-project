@@ -352,6 +352,10 @@ input[type="submit"]:hover {
 
 /* Om Oss file starts here*/
 
+.banner-gallery {
+  gap : 20px;
+}
+
 .arbeiderer {
   margin-top: 140px;
   margin-bottom: 120px;
@@ -439,7 +443,7 @@ input[type="submit"]:hover {
 }
 
 .candidate-img {
- width: 50%;
+ width: 300px;
  height: 500px;
  border-radius: 30px;
 }
@@ -503,8 +507,6 @@ input[type="submit"]:hover {
   .banner-gallery {
     flex-direction: column;
     gap: 10px;
-    align-items: center;
-    justify-content: center;
   }
 
   .portfolio-containers {
