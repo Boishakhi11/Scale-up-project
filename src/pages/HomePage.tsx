@@ -1,106 +1,130 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { usePortfolioCards } from "../hooks/usePortfolioCards";
+import { useLanguage } from "../lib/LanguageContext";
+import { useAuth } from "../lib/AuthContext";
+import { deletePortfolio } from "../lib/portfolioStore";
 
 export function HomePage() {
   const candidates = usePortfolioCards();
+  const { t } = useLanguage();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleDelete = (slug: string) => {
+    if (confirm("Er du sikker på at du vil slette denne porteføljen?")) {
+      deletePortfolio(slug);
+    }
+  };
 
   return (
     <>
-      <section className="mx-auto grid max-w-[1140px] gap-14 px-6 py-10 lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:py-20">
+      <section className="mx-auto grid max-w-[1140px] gap-14 px-6 py-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:py-24">
         <div className="animate-fade-up">
-          <span className="inline-flex rounded-full border border-indigo-200 bg-white/80 px-4 py-2 text-sm font-semibold text-indigo-700 shadow-sm">
-            Scale Up Digital Portfolio
+          <span className="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-4 py-2 text-sm font-bold text-indigo-700 shadow-sm">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+            </span>
+            {t("home.badge")}
           </span>
-          <h1 className="mt-6 max-w-2xl font-serif text-5xl font-bold leading-tight text-slate-900 sm:text-6xl">
-            Digital <span className="text-indigo-600">Portefolje</span>
+          <h1 className="mt-8 font-serif text-5xl font-extrabold leading-tight text-slate-900 sm:text-6xl lg:text-[4rem]">
+            {t("home.title1")} <span className="text-indigo-600">{t("home.title2")}</span>
           </h1>
-          <p className="mt-5 max-w-[570px] text-lg leading-8 text-slate-600 sm:text-xl">
-            Her finner du digitale portefoljer fra deltakere i Scale Up-kurset. Utforsk kandidater, les mer om
-            Nettverkshuset og ta kontakt dersom du vil samarbeide.
+          <p className="mt-6 max-w-[570px] text-lg leading-relaxed text-slate-600 sm:text-xl">
+            {t("home.subtitle")}
           </p>
-          <div className="mt-8 flex flex-wrap gap-4">
+          <div className="mt-10 flex flex-wrap gap-4">
             <Link
-              to="/register"
-              className="rounded-full bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition duration-300 hover:-translate-y-0.5 hover:bg-indigo-700"
+              to={user ? "/register" : "/login"}
+              className="rounded-full bg-indigo-600 px-8 py-3.5 text-sm font-bold text-white shadow-lg shadow-indigo-200 transition duration-300 hover:-translate-y-0.5 hover:bg-indigo-700"
             >
-              Create Portfolio
+              {t("home.createPortfolio")}
             </Link>
             <Link
               to="/about"
-              className="rounded-full border border-slate-300 bg-white/80 px-6 py-3 text-sm font-semibold text-slate-700 transition duration-300 hover:-translate-y-0.5 hover:border-slate-400"
+              className="rounded-full border border-slate-300 bg-white px-8 py-3.5 text-sm font-bold text-slate-700 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-slate-400 hover:bg-slate-50"
             >
-              Om Oss
+              {t("home.aboutUs")}
             </Link>
           </div>
-          <div className="mt-10 grid max-w-xl gap-4 sm:grid-cols-3">
-            <div className="rounded-2xl border border-white/70 bg-white/80 p-4 shadow-sm">
-              <p className="text-2xl font-bold text-slate-900">{candidates.length}+</p>
-              <p className="mt-1 text-sm text-slate-500">Candidates</p>
+          <div className="mt-12 grid max-w-xl gap-4 sm:grid-cols-3">
+            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <p className="text-3xl font-extrabold text-slate-900">{candidates.length}+</p>
+              <p className="mt-1 text-sm font-medium text-slate-500">{t("home.candidates")}</p>
             </div>
-            <div className="rounded-2xl border border-white/70 bg-white/80 p-4 shadow-sm">
-              <p className="text-2xl font-bold text-slate-900">Fast</p>
-              <p className="mt-1 text-sm text-slate-500">Portfolio creation</p>
+            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <p className="text-3xl font-extrabold text-slate-900">{t("home.fast")}</p>
+              <p className="mt-1 text-sm font-medium text-slate-500">{t("home.portfolioCreation")}</p>
             </div>
-            <div className="rounded-2xl border border-white/70 bg-white/80 p-4 shadow-sm">
-              <p className="text-2xl font-bold text-slate-900">Live</p>
-              <p className="mt-1 text-sm text-slate-500">Showcase pages</p>
+            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <p className="text-3xl font-extrabold text-slate-900">{t("home.live")}</p>
+              <p className="mt-1 text-sm font-medium text-slate-500">{t("home.showcasePages")}</p>
             </div>
           </div>
         </div>
-        <div className="animate-float flex justify-center lg:justify-end">
-          <div className="relative">
-            <div className="absolute -inset-4 rounded-[2rem] bg-[radial-gradient(circle,#c7d2fe_0%,rgba(199,210,254,0)_70%)] blur-2xl" />
-            <div className="absolute -left-6 top-8 hidden rounded-2xl border border-white/70 bg-white/80 px-4 py-3 shadow-xl backdrop-blur sm:block">
-              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">Featured</p>
-              <p className="mt-1 text-sm font-semibold text-slate-800">Candidate stories</p>
-            </div>
-            <img
-              src="/Images/image/cover.png"
-              alt="Illustrasjon for Scale Up"
-              className="relative max-h-[420px] w-full max-w-[570px] rounded-[2rem] border border-white/60 object-cover shadow-[0_30px_80px_rgba(79,70,229,0.2)]"
-            />
-          </div>
+        <div className="animate-float flex justify-center lg:justify-end relative">
+          <img
+            src="/Images/image/cover.png"
+            alt="Illustrasjon for Scale Up"
+            className="max-h-[460px] w-full max-w-[570px] rounded-3xl object-cover shadow-[0_20px_50px_rgba(15,23,42,0.1)]"
+          />
         </div>
       </section>
 
       <section className="mx-auto mt-24 max-w-[1140px] px-6">
         <div className="animate-fade-up text-center">
-          <h2 className="font-serif text-4xl font-bold text-slate-900 sm:text-5xl">
-            Vare <span className="text-indigo-600">Kandidater</span>
+          <h2 className="font-serif text-4xl font-extrabold text-slate-900 sm:text-5xl">
+            {t("home.ourCandidates1")} <span className="text-indigo-600">{t("home.ourCandidates2")}</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-3xl text-lg text-slate-600 sm:text-xl">
-            Her kan du bli bedre kjent med vare flotte kandidater gjennom Digital Portfolio.
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600 sm:text-xl">
+            {t("home.ourCandidatesSubtitle")}
           </p>
         </div>
 
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {candidates.map((candidate) => {
             const hasProfile = Boolean(candidate.slug);
 
             return (
               <article
                 key={candidate.name}
-                className="card-lift animate-fade-up rounded-[1.75rem] border border-white/70 bg-white/90 px-5 py-6 text-center shadow-[0_16px_40px_rgba(15,23,42,0.08)] backdrop-blur"
+                className="card-lift animate-fade-up flex flex-col rounded-3xl border border-slate-200 bg-white px-6 py-8 text-center shadow-sm transition-all hover:shadow-lg"
               >
                 <img
                   src={candidate.image}
                   alt={candidate.name}
-                  className="mx-auto h-[108px] w-[108px] rounded-full border-4 border-indigo-50 object-cover shadow-md"
+                  className="mx-auto h-28 w-28 rounded-full border-4 border-indigo-50 object-cover shadow-sm"
                 />
-                <h3 className="mt-5 text-xl font-semibold text-slate-900">{candidate.name}</h3>
-                <p className="mt-2 min-h-12 text-base font-medium text-slate-600">{candidate.title}</p>
-                <div className="mt-4">
+                <h3 className="mt-5 text-xl font-bold text-slate-900">{candidate.name}</h3>
+                <p className="mt-2 min-h-12 text-sm font-medium text-slate-500">{candidate.title}</p>
+                <div className="mt-auto pt-6 space-y-2">
                   {hasProfile ? (
                     <Link
                       to={`/portfolio/${candidate.slug}`}
-                      className="inline-block w-full rounded-full bg-indigo-600 px-5 py-3 text-sm font-semibold text-white transition duration-300 hover:bg-indigo-700"
+                      className="inline-block w-full rounded-full bg-indigo-50 px-5 py-3 text-sm font-bold text-indigo-700 transition duration-300 hover:bg-indigo-600 hover:text-white"
                     >
-                      PORTEFOLJE
+                      {t("home.portfolioBtn")}
                     </Link>
                   ) : (
-                    <span className="inline-block w-full rounded-full bg-slate-100 px-5 py-3 text-sm font-semibold text-slate-400">
-                      Coming Soon
+                    <span className="inline-block w-full rounded-full bg-slate-50 px-5 py-3 text-sm font-bold text-slate-400">
+                      {t("home.comingSoon")}
                     </span>
+                  )}
+                  {user?.role === "admin" && hasProfile && (
+                    <div className="grid grid-cols-2 gap-2 mt-2">
+                      <button
+                        onClick={() => navigate(`/register?edit=${candidate.slug}`)}
+                        className="rounded-full bg-amber-50 px-3 py-2 text-xs font-bold text-amber-700 transition hover:bg-amber-100"
+                      >
+                        Rediger
+                      </button>
+                      <button
+                        onClick={() => handleDelete(candidate.slug!)}
+                        className="rounded-full bg-red-50 px-3 py-2 text-xs font-bold text-red-700 transition hover:bg-red-100"
+                      >
+                        Slett
+                      </button>
+                    </div>
                   )}
                 </div>
               </article>
@@ -109,22 +133,24 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto mt-24 max-w-[1140px] px-6">
-        <div className="overflow-hidden rounded-[2rem] border border-white/70 bg-white/85 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur">
-          <img src="/Images/image/subscirbe.png" alt="Scale Up group" className="h-[320px] w-full object-cover" />
-          <div className="px-6 py-10 sm:px-10">
-            <h2 className="text-center font-serif text-4xl font-bold text-slate-900 sm:text-5xl">Fra Potensial til Praksis</h2>
-            <p className="mx-auto mt-4 max-w-2xl text-center text-base text-slate-600 sm:text-lg">
-              Hold deg oppdatert pa prosjektet, kandidater og nye muligheter for samarbeid.
+      <section className="mx-auto mt-32 max-w-[1140px] px-6">
+        <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-xl flex flex-col md:flex-row">
+          <div className="md:w-1/2">
+            <img src="/Images/image/subscirbe.png" alt="Scale Up group" className="h-full w-full object-cover min-h-[300px]" />
+          </div>
+          <div className="px-8 py-12 md:w-1/2 flex flex-col justify-center">
+            <h2 className="font-serif text-3xl font-extrabold text-slate-900 sm:text-4xl">{t("home.subscribeTitle")}</h2>
+            <p className="mt-4 text-base text-slate-600 leading-relaxed">
+              {t("home.subscribeSubtitle")}
             </p>
-            <form className="mx-auto mt-8 flex max-w-2xl flex-col justify-center gap-3 sm:flex-row sm:items-center" onSubmit={(event) => event.preventDefault()}>
+            <form className="mt-8 flex flex-col sm:flex-row gap-3" onSubmit={(event) => event.preventDefault()}>
               <input
                 type="email"
-                placeholder="Write Your Email"
-                className="min-w-0 flex-1 rounded-full border border-slate-300 bg-white px-5 py-3 outline-none transition focus:border-indigo-500"
+                placeholder={t("home.emailPlaceholder")}
+                className="flex-1 rounded-full border border-slate-300 bg-slate-50 px-5 py-3.5 text-slate-900 placeholder-slate-400 outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-100"
               />
-              <button className="rounded-full bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition duration-300 hover:bg-indigo-700">
-                Subscribe
+              <button className="rounded-full bg-indigo-600 px-8 py-3.5 text-sm font-bold text-white shadow-md shadow-indigo-200 transition duration-300 hover:bg-indigo-700">
+                {t("home.subscribeBtn")}
               </button>
             </form>
           </div>

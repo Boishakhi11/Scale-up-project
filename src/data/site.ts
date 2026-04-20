@@ -38,24 +38,18 @@ export type PortfolioRecord = {
 };
 
 export const navLinks = [
-  { label: "Hjem", to: "/" },
-  { label: "Om Oss", to: "/about" },
-  { label: "Register", to: "/register" },
+  { label: "Hjem", to: "/", labelKey: "home" },
+  { label: "Om Oss", to: "/about", labelKey: "about" },
+  { label: "Registrer", to: "/register", labelKey: "register" },
 ];
 
 export const baseCandidates: Candidate[] = [
-  { name: "Boishakhi", title: "Software Engineer", image: "/Images/image/Mukta.jpeg", slug: "boishakhi" },
-  { name: "Varsha", title: "IT Administrasjon", image: "/Images/image/Varsha.jpeg" },
-  { name: "Syedha", title: "Data Scientist", image: "/Images/image/Farzana.jpeg" },
-  { name: "Saranya", title: "Fullstack Developer", image: "/Images/image/woman.png" },
-  { name: "Vinithra", title: "Software Engineer", image: "/Images/image/VIni.jpeg" },
-  { name: "Swarupa", title: "Software Developer", image: "/Images/image/woman.png" },
-  { name: "Aarcha", title: "PhD, Researcher", image: "/Images/image/archa.jpeg" },
-  { name: "Soumya", title: "Data Analyst", image: "/Images/image/smoya.jpeg" },
-  { name: "Sumathi", title: "Cloud Service", image: "/Images/image/sumoti.jpeg" },
-  { name: "Divya", title: "Financial Analyst", image: "/Images/image/sowmya.jpeg" },
-  { name: "Liya", title: "Financial Analyst", image: "/Images/image/liya.jpeg" },
-  { name: "Riya", title: "Financial Analyst", image: "/Images/image/woman.png" },
+  { name: "Boishakhi", title: "Programvareutvikler", image: "/Images/image/Mukta.jpeg", slug: "boishakhi" },
+  { name: "Varsha", title: "IT-administrasjon", image: "/Images/image/Varsha.jpeg", slug: "varsha" },
+  { name: "Syedha", title: "Dataforsker", image: "/Images/image/Farzana.jpeg", slug: "syedha" },
+  { name: "Vinithra", title: "Programvareutvikler", image: "/Images/image/VIni.jpeg", slug: "vinithra" },
+  { name: "Aarcha", title: "PhD, Forsker", image: "/Images/image/archa.jpeg", slug: "aarcha" },
+  { name: "Soumya", title: "Dataanalytiker", image: "/Images/image/smoya.jpeg", slug: "soumya" },
 ];
 
 export const staticPortfolios: PortfolioRecord[] = [
@@ -138,6 +132,131 @@ export const staticPortfolios: PortfolioRecord[] = [
       },
     ],
   },
+  {
+    slug: "varsha",
+    firstName: "Varsha",
+    lastName: "P",
+    fullName: "Varsha P",
+    shortName: "Varsha",
+    title: "IT-administrasjon",
+    email: "varsha@eksempel.no",
+    phone: "+47 000 00 001",
+    location: "Oslo, Norway",
+    birthDate: "10 March 1994",
+    image: "/Images/image/Varsha.jpeg",
+    intro: "Erfaren IT-administrator med fokus på systemvedlikehold og optimalisering.",
+    about: "Jeg brenner for å sikre at IT-infrastrukturen kjører knirkefritt, med spesielt fokus på skyteknologi og nettverkssikkerhet.",
+    skills: [
+      { name: "Systemadministrasjon", description: "Vedlikehold av servere og nettverk." },
+      { name: "Azure / AWS", description: "Grunnleggende skytjenester og drift." },
+    ],
+    experiences: [
+      { title: "IT Administrator", org: "TechCorp AS", period: "Jan 2022 - Nå", summary: "Drift av interne nettverk og brukersupport." }
+    ],
+    education: [
+      { title: "BSc IT Operations", org: "OsloMet", period: "2018 - 2021", summary: "Fokus på infrastruktur og skysikkerhet." }
+    ]
+  },
+  {
+    slug: "syedha",
+    firstName: "Syedha",
+    lastName: "F",
+    fullName: "Syedha F",
+    shortName: "Syedha",
+    title: "Dataforsker",
+    email: "syedha@eksempel.no",
+    phone: "+47 000 00 002",
+    location: "Oslo, Norway",
+    birthDate: "05 August 1993",
+    image: "/Images/image/Farzana.jpeg",
+    intro: "Analytisk dataforsker med ekspertise innen maskinlæring og statistisk analyse.",
+    about: "Jeg elsker å dykke ned i store datasett for å finne verdifull innsikt og bygge prediktive modeller.",
+    skills: [
+      { name: "Python / Pandas", description: "Ekspertise i datamanipulering og analyse." },
+      { name: "Machine Learning", description: "Bygger prediktive modeller med scikit-learn og TensorFlow." },
+    ],
+    experiences: [
+      { title: "Data Scientist", org: "DataCorp", period: "Mar 2021 - Nå", summary: "Utvikler ML-modeller for kundeprediksjon." }
+    ],
+    education: [
+      { title: "MSc Data Science", org: "UiO", period: "2019 - 2021", summary: "Spesialisering i kunstig intelligens og maskinlæring." }
+    ]
+  },
+  {
+    slug: "vinithra",
+    firstName: "Vinithra",
+    lastName: "S",
+    fullName: "Vinithra S",
+    shortName: "Vinithra",
+    title: "Programvareutvikler",
+    email: "vinithra@eksempel.no",
+    phone: "+47 000 00 003",
+    location: "Oslo, Norway",
+    birthDate: "22 September 1995",
+    image: "/Images/image/VIni.jpeg",
+    intro: "Lidenskapelig fullstack-utvikler som bygger skalerbare og moderne webløsninger.",
+    about: "Jeg har en sterk bakgrunn i JavaScript-økosystemet og elsker å løse komplekse problemer på både frontend og backend.",
+    skills: [
+      { name: "React", description: "Utvikling av moderne brukergrensesnitt." },
+      { name: "TypeScript", description: "Typet sikkerhet for store applikasjoner." },
+    ],
+    experiences: [
+      { title: "Fullstack Developer", org: "WebSystems", period: "Aug 2020 - Nå", summary: "Utvikling av SaaS-plattformer for bedriftsmarkedet." }
+    ],
+    education: [
+      { title: "BSc Software Engineering", org: "NTNU", period: "2017 - 2020", summary: "Algoritmer, databaser og moderne webutvikling." }
+    ]
+  },
+  {
+    slug: "aarcha",
+    firstName: "Aarcha",
+    lastName: "R",
+    fullName: "Aarcha R",
+    shortName: "Aarcha",
+    title: "PhD, Forsker",
+    email: "aarcha@eksempel.no",
+    phone: "+47 000 00 004",
+    location: "Oslo, Norway",
+    birthDate: "12 December 1990",
+    image: "/Images/image/archa.jpeg",
+    intro: "Forsker med doktorgrad i bioteknologi og lidenskap for innovasjon.",
+    about: "Min forskning fokuserer på bærekraftige løsninger og data-drevet analyse av biologiske systemer.",
+    skills: [
+      { name: "Forskning", description: "Design og gjennomføring av komplekse studier." },
+      { name: "Dataanalyse", description: "Statistisk analyse av forskningsdata." },
+    ],
+    experiences: [
+      { title: "Postdoc Forsker", org: "UiO", period: "Jan 2021 - Nå", summary: "Leder prosjekter innen bærekraftig bioteknologi." }
+    ],
+    education: [
+      { title: "PhD Bioteknologi", org: "NMBU", period: "2016 - 2020", summary: "Fokus på miljøvennlige prosesser." }
+    ]
+  },
+  {
+    slug: "soumya",
+    firstName: "Soumya",
+    lastName: "K",
+    fullName: "Soumya K",
+    shortName: "Soumya",
+    title: "Dataanalytiker",
+    email: "soumya@eksempel.no",
+    phone: "+47 000 00 005",
+    location: "Oslo, Norway",
+    birthDate: "18 November 1994",
+    image: "/Images/image/smoya.jpeg",
+    intro: "Analytisk og detaljorientert dataanalytiker med fokus på forretningsinnsikt.",
+    about: "Jeg oversetter komplekse data til handlingsbar innsikt for å hjelpe bedrifter med å ta bedre beslutninger.",
+    skills: [
+      { name: "SQL", description: "Avanserte spørringer og databaseoptimalisering." },
+      { name: "PowerBI / Tableau", description: "Visualisering av data og dashboard-utvikling." },
+    ],
+    experiences: [
+      { title: "Data Analyst", org: "FinansGruppen", period: "Feb 2022 - Nå", summary: "Rapportering og analyse av finansielle trender." }
+    ],
+    education: [
+      { title: "BSc Økonomi & Administrasjon", org: "BI", period: "2018 - 2021", summary: "Fokus på kvantitativ metode og finans." }
+    ]
+  }
 ];
 
 export const teamMembers = [

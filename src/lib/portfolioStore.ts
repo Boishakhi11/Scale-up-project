@@ -1,6 +1,7 @@
 import { baseCandidates, staticPortfolios, type Candidate, type ExperienceItem, type PortfolioRecord, type PortfolioSkill } from "../data/site";
 
 const STORAGE_KEY = "digital-portfolios";
+const DELETED_KEY = "deleted-portfolios";
 const STORAGE_EVENT = "portfolio-store-updated";
 const fallbackImage = "/Images/image/woman.png";
 
@@ -77,8 +78,26 @@ function writeSavedPortfolios(portfolios: PortfolioRecord[]) {
   window.dispatchEvent(new Event(STORAGE_EVENT));
 }
 
+export function getDeletedSlugs(): string[] {
+  if (typeof window === "undefined") return [];
+  const raw = window.localStorage.getItem(DELETED_KEY);
+  return raw ? JSON.parse(raw) : [];
+}
+
+export function deletePortfolio(slug: string) {
+  const deleted = getDeletedSlugs();
+  if (!deleted.includes(slug)) {
+    window.localStorage.setItem(DELETED_KEY, JSON.stringify([...deleted, slug]));
+  }
+  
+  const saved = readSavedPortfolios().filter(p => p.slug !== slug);
+  writeSavedPortfolios(saved);
+  window.dispatchEvent(new Event(STORAGE_EVENT));
+}
+
 export function getAllPortfolios() {
-  return [...staticPortfolios, ...readSavedPortfolios()];
+  const deleted = getDeletedSlugs();
+  return [...staticPortfolios, ...readSavedPortfolios()].filter(p => !deleted.includes(p.slug));
 }
 
 export function getPortfolioBySlug(slug: string) {
@@ -86,24 +105,30 @@ export function getPortfolioBySlug(slug: string) {
 }
 
 export function getCandidateCards(): Candidate[] {
-  const savedCandidates = readSavedPortfolios().map((portfolio) => ({
-    name: portfolio.shortName,
-    title: portfolio.title,
-    image: portfolio.image || fallbackImage,
-    slug: portfolio.slug,
-  }));
+  const deleted = getDeletedSlugs();
+  
+  const savedCandidates = readSavedPortfolios()
+    .filter(p => !deleted.includes(p.slug))
+    .map((portfolio) => ({
+      name: portfolio.shortName,
+      title: portfolio.title,
+      image: portfolio.image || fallbackImage,
+      slug: portfolio.slug,
+    }));
 
-  return [...savedCandidates, ...baseCandidates];
+  const activeBase = baseCandidates.filter(c => !c.slug || !deleted.includes(c.slug));
+
+  return [...savedCandidates, ...activeBase];
 }
 
-export function createPortfolio(values: PortfolioFormValues): PortfolioRecord {
+export function createPortfolio(values: PortfolioFormValues, existingSlug?: string): PortfolioRecord {
   const firstName = values.firstName.trim();
   const lastName = values.lastName.trim();
   const fullName = [firstName, lastName].filter(Boolean).join(" ");
   const shortName = firstName || fullName;
 
   const nextPortfolio: PortfolioRecord = {
-    slug: slugify(fullName || values.email) || `portfolio-${Date.now()}`,
+    slug: existingSlug || slugify(fullName || values.email) || `portfolio-${Date.now()}`,
     firstName,
     lastName,
     fullName: fullName || values.email,
