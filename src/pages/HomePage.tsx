@@ -3,6 +3,8 @@ import { usePortfolioCards } from "../hooks/usePortfolioCards";
 import { useLanguage } from "../lib/LanguageContext";
 import { useAuth } from "../lib/AuthContext";
 import { deletePortfolio } from "../lib/portfolioStore";
+import Swal from "sweetalert2";
+import { useState } from "react";
 
 export function HomePage() {
   const candidates = usePortfolioCards();
@@ -10,10 +12,47 @@ export function HomePage() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
+  const [subscribeEmail, setSubscribeEmail] = useState("");
+
   const handleDelete = (slug: string) => {
-    if (confirm("Er du sikker på at du vil slette denne porteføljen?")) {
-      deletePortfolio(slug);
-    }
+    Swal.fire({
+      title: t("home.deleteConfirmTitle") || "Er du sikker?",
+      text: t("home.deleteConfirmDesc") || "Du kan ikke angre dette!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#4f46e5",
+      cancelButtonColor: "#ef4444",
+      confirmButtonText: t("home.deleteConfirmBtn") || "Ja, slett den!",
+      cancelButtonText: t("register.backBtn") || "Avbryt"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deletePortfolio(slug);
+        Swal.fire({
+          title: "Slettet!",
+          text: "Porteføljen har blitt slettet.",
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false
+        });
+      }
+    });
+  };
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!subscribeEmail) return;
+    
+    Swal.fire({
+      title: "Suksess!",
+      text: "Takk for din interesse. Vi tar kontakt snart!",
+      icon: "success",
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    });
+    setSubscribeEmail("");
   };
 
   return (
@@ -143,13 +182,16 @@ export function HomePage() {
             <p className="mt-4 text-base text-slate-600 leading-relaxed">
               {t("home.subscribeSubtitle")}
             </p>
-            <form className="mt-8 flex flex-col sm:flex-row gap-3" onSubmit={(event) => event.preventDefault()}>
+            <form className="mt-8 flex flex-col sm:flex-row gap-3" onSubmit={handleSubscribe}>
               <input
                 type="email"
+                value={subscribeEmail}
+                onChange={(e) => setSubscribeEmail(e.target.value)}
                 placeholder={t("home.emailPlaceholder")}
                 className="flex-1 rounded-full border border-slate-300 bg-slate-50 px-5 py-3.5 text-slate-900 placeholder-slate-400 outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-100"
+                required
               />
-              <button className="rounded-full bg-indigo-600 px-8 py-3.5 text-sm font-bold text-white shadow-md shadow-indigo-200 transition duration-300 hover:bg-indigo-700">
+              <button type="submit" className="rounded-full bg-indigo-600 px-8 py-3.5 text-sm font-bold text-white shadow-md shadow-indigo-200 transition duration-300 hover:bg-indigo-700">
                 {t("home.subscribeBtn")}
               </button>
             </form>

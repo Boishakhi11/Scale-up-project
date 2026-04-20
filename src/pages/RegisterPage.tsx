@@ -3,6 +3,7 @@ import { useNavigate, Navigate, useSearchParams } from "react-router-dom";
 import { createPortfolio, getPortfolioBySlug } from "../lib/portfolioStore";
 import { useAuth } from "../lib/AuthContext";
 import { useLanguage } from "../lib/LanguageContext";
+import Swal from "sweetalert2";
 
 /* ─── Types ─────────────────────────────────────────────── */
 type ResumeRow = { title: string; org: string; period: string; summary: string };
@@ -92,7 +93,6 @@ export function RegisterPage() {
   const [data, setData]       = useState<FormData>(initialData);
   const [errors, setErrors]   = useState<StepErrors>({});
   const [skillInput, setSkillInput] = useState("");
-  const [submitted, setSubmitted]   = useState(false);
   const { user } = useAuth();
 
   const STEPS = [
@@ -208,30 +208,28 @@ export function RegisterPage() {
       firstName: data.firstName, lastName: data.lastName,
       title: data.title, email: data.email, phone: data.phone,
       location: data.location, birthDate: data.birthDate, image: data.image,
+      linkedin: data.linkedin, github: data.github,
       intro: data.intro, about: data.about,
       skillsText, experienceText, educationText,
     }, editSlug || undefined);
 
-    setSubmitted(true);
-    setTimeout(() => navigate(`/portfolio/${portfolio.slug}`), 1200);
+    Swal.fire({
+      title: "Suksess!",
+      text: editSlug ? "Profilen ble oppdatert." : "Profilen ble opprettet.",
+      icon: "success",
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    });
+
+    navigate(`/portfolio/${portfolio.slug}`);
   };
 
   const progress = ((step - 1) / (STEPS.length - 1)) * 100;
 
   const field = (name: string) => (errors[name] ? inputErrCls : inputCls);
-
-  /* ── Success ── */
-  if (submitted) {
-    return (
-      <div className="flex min-h-[60vh] items-center justify-center px-6 py-20">
-        <div className="space-y-4 text-center">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full text-4xl bg-indigo-100">🎉</div>
-          <h2 className="text-2xl font-extrabold text-slate-900">{t("register.successTitle")}</h2>
-          <p className="text-slate-600">{t("register.successDesc")}</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen px-4 py-14 sm:px-6">
