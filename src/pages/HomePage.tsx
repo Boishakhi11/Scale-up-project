@@ -22,8 +22,8 @@ export function HomePage() {
       showCancelButton: true,
       confirmButtonColor: "#4f46e5",
       cancelButtonColor: "#ef4444",
-      confirmButtonText: t("home.deleteConfirmBtn") || "Ja, slett den!",
-      cancelButtonText: t("register.backBtn") || "Avbryt"
+      confirmButtonText: "Ja, slett den!",
+      cancelButtonText: "Avbryt"
     }).then((result) => {
       if (result.isConfirmed) {
         deletePortfolio(slug);
