@@ -13,8 +13,9 @@ export function PortfolioPage() {
   // Force re-render when portfolio updates (e.g., returning from edit)
   const [, setVersion] = useState(0);
   useEffect(() => {
+    window.scrollTo(0, 0);
     return subscribeToPortfolioUpdates(() => setVersion(v => v + 1));
-  }, []);
+  }, [slug]);
 
   const portfolio = slug ? getPortfolioBySlug(slug) : undefined;
 

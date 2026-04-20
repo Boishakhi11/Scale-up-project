@@ -99,7 +99,10 @@ export function deletePortfolio(slug: string) {
 
 export function getAllPortfolios() {
   const deleted = getDeletedSlugs();
-  return [...staticPortfolios, ...readSavedPortfolios()].filter(p => !deleted.includes(p.slug));
+  const saved = readSavedPortfolios();
+  const savedSlugs = saved.map(p => p.slug);
+  const activeStatic = staticPortfolios.filter(p => !savedSlugs.includes(p.slug));
+  return [...activeStatic, ...saved].filter(p => !deleted.includes(p.slug));
 }
 
 export function getPortfolioBySlug(slug: string) {
@@ -118,9 +121,10 @@ export function getCandidateCards(): Candidate[] {
       slug: portfolio.slug,
     }));
 
-  const activeBase = baseCandidates.filter(c => !c.slug || !deleted.includes(c.slug));
+  const savedSlugs = savedCandidates.map(c => c.slug);
+  const activeBase = baseCandidates.filter(c => !c.slug || (!deleted.includes(c.slug) && !savedSlugs.includes(c.slug)));
 
-  return [...savedCandidates, ...activeBase];
+  return [...activeBase, ...savedCandidates];
 }
 
 export function createPortfolio(values: PortfolioFormValues, existingSlug?: string): PortfolioRecord {

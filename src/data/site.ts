@@ -72,7 +72,7 @@ export const staticPortfolios: PortfolioRecord[] = [
     phone: "+47 000 00 000",
     location: "Dhaka, Bangladesh",
     birthDate: "15 April 1996",
-    image: "/Images/image/bsk.jpeg",
+    image: "/Images/image/Mukta.jpeg",
     intro:
       "Front-End Developer med bakgrunn i testing, moderne frontend og kontinuerlig laering. Trives i team som bygger kvalitet, gode opplevelser og positiv effekt.",
     about:
