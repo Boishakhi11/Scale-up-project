@@ -14,6 +14,8 @@ export type PortfolioFormValues = {
   location: string;
   birthDate: string;
   image: string;
+  linkedin?: string;
+  github?: string;
   intro: string;
   about: string;
   skillsText: string;
@@ -139,6 +141,8 @@ export function createPortfolio(values: PortfolioFormValues, existingSlug?: stri
     location: values.location.trim(),
     birthDate: values.birthDate.trim(),
     image: values.image.trim() || fallbackImage,
+    linkedin: values.linkedin?.trim(),
+    github: values.github?.trim(),
     intro: values.intro.trim(),
     about: values.about.trim(),
     skills: parseSkills(values.skillsText),

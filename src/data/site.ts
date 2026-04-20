@@ -30,6 +30,8 @@ export type PortfolioRecord = {
   location: string;
   birthDate: string;
   image: string;
+  linkedin?: string;
+  github?: string;
   intro: string;
   about: string;
   skills: PortfolioSkill[];
