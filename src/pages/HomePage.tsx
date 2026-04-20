@@ -16,8 +16,8 @@ export function HomePage() {
 
   const handleDelete = (slug: string) => {
     Swal.fire({
-      title: t("home.deleteConfirmTitle") || "Er du sikker?",
-      text: t("home.deleteConfirmDesc") || "Du kan ikke angre dette!",
+      title: "Are you sure to delete this profile?",
+      text: "Er du sikker på at du vil slette denne profilen?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#4f46e5",

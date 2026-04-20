@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth, Role } from "../lib/AuthContext";
 import { useLanguage } from "../lib/LanguageContext";
+import Swal from "sweetalert2";
 
 export function LoginPage() {
   const { loginWithEmail, loginWithGoogle } = useAuth();
@@ -24,6 +25,16 @@ export function LoginPage() {
     }
 
     loginWithEmail(role, email);
+    Swal.fire({
+      title: "Suksess!",
+      text: "Du er nå logget inn.",
+      icon: "success",
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true
+    });
     navigate("/");
   };
 
@@ -34,6 +45,16 @@ export function LoginPage() {
     try {
       if (provider === "Google") {
         await loginWithGoogle();
+        Swal.fire({
+          title: "Suksess!",
+          text: "Du er nå logget inn.",
+          icon: "success",
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true
+        });
         navigate("/");
       }
     } catch (error) {

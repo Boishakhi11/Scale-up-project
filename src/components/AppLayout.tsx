@@ -4,6 +4,7 @@ import { navLinks } from "../data/site";
 import { useLanguage } from "../lib/LanguageContext";
 import { useAuth } from "../lib/AuthContext";
 import { getAllPortfolios } from "../lib/portfolioStore";
+import Swal from "sweetalert2";
 
 const navClassName = ({ isActive }: { isActive: boolean }) =>
   [
@@ -93,6 +94,16 @@ export function AppLayout() {
                       onClick={() => {
                         setShowMenu(false);
                         logout();
+                        Swal.fire({
+                          title: "Suksess!",
+                          text: "Du er nå logget ut.",
+                          icon: "success",
+                          toast: true,
+                          position: "top-end",
+                          showConfirmButton: false,
+                          timer: 3000,
+                          timerProgressBar: true
+                        });
                         navigate("/");
                       }}
                       className="px-4 py-2 text-sm text-left font-semibold text-red-600 hover:bg-red-50"
