@@ -88,7 +88,7 @@ export function HomePage() {
             return (
               <article
                 key={candidate.name}
-                className="card-lift animate-fade-up flex flex-col rounded-3xl border border-slate-200 bg-white px-6 py-8 text-center shadow-sm transition-all hover:shadow-lg"
+                className="card-lift animate-fade-up flex flex-col rounded-3xl border-2 border-b-8 border-r-8 border-slate-200 bg-white px-6 py-8 text-center shadow-md transition-all hover:shadow-xl hover:-translate-y-1"
               >
                 <img
                   src={candidate.image}
@@ -101,7 +101,7 @@ export function HomePage() {
                   {hasProfile ? (
                     <Link
                       to={`/portfolio/${candidate.slug}`}
-                      className="inline-block w-full rounded-full bg-indigo-50 px-5 py-3 text-sm font-bold text-indigo-700 transition duration-300 hover:bg-indigo-600 hover:text-white"
+                      className="inline-block w-full rounded-full bg-gradient-to-r from-indigo-500 to-indigo-600 px-5 py-3 text-sm font-bold text-white shadow-md transition duration-300 hover:from-indigo-600 hover:to-indigo-700 hover:shadow-lg hover:-translate-y-0.5"
                     >
                       {t("home.portfolioBtn")}
                     </Link>

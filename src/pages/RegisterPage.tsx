@@ -2,6 +2,7 @@ import { FormEvent, KeyboardEvent, useState, useEffect } from "react";
 import { useNavigate, Navigate, useSearchParams } from "react-router-dom";
 import { createPortfolio, getPortfolioBySlug } from "../lib/portfolioStore";
 import { useAuth } from "../lib/AuthContext";
+import { useLanguage } from "../lib/LanguageContext";
 
 /* ─── Types ─────────────────────────────────────────────── */
 type ResumeRow = { title: string; org: string; period: string; summary: string };
@@ -38,12 +39,6 @@ const initialData: FormData = {
   education: [emptyRow()],
 };
 
-const STEPS = [
-  { id: 1, label: "Personlig info",    icon: "👤" },
-  { id: 2, label: "Ferdigheter",       icon: "💡" },
-  { id: 3, label: "Erfaring & Utdanning", icon: "🎓" },
-];
-
 const SUGGESTED_SKILLS = [
   "JavaScript", "TypeScript", "React", "Next.js", "Node.js",
   "Python", "SQL", "MongoDB", "Tailwind CSS", "Git",
@@ -59,28 +54,28 @@ const inputErrCls =
 const labelCls = "block text-xs font-bold uppercase tracking-widest text-slate-600 mb-2";
 
 /* ─── Validation ─────────────────────────────────────────── */
-function validateStep(step: number, data: FormData): StepErrors {
+function validateStep(step: number, data: FormData, t: any): StepErrors {
   const errors: StepErrors = {};
 
   if (step === 1) {
-    if (!data.firstName.trim())  errors.firstName = "Fornavn er påkrevd.";
-    if (!data.title.trim())      errors.title     = "Yrkestittel er påkrevd.";
-    if (!data.email.trim())      errors.email     = "E-post er påkrevd.";
-    else if (!/\S+@\S+\.\S+/.test(data.email)) errors.email = "Ugyldig e-postadresse.";
-    if (!data.location.trim())   errors.location  = "Sted er påkrevd.";
+    if (!data.firstName.trim())  errors.firstName = t("register.errorFirstName");
+    if (!data.title.trim())      errors.title     = t("register.errorTitle");
+    if (!data.email.trim())      errors.email     = t("register.errorEmail");
+    else if (!/\S+@\S+\.\S+/.test(data.email)) errors.email = t("register.errorEmailInvalid");
+    if (!data.location.trim())   errors.location  = t("register.errorLocation");
   }
 
   if (step === 2) {
-    if (!data.intro.trim())          errors.intro  = "Kort introduksjon er påkrevd.";
-    if (!data.about.trim())          errors.about  = "Om meg er påkrevd.";
-    if (data.skills.length === 0)    errors.skills = "Legg til minst én ferdighet.";
+    if (!data.intro.trim())          errors.intro  = t("register.errorIntro");
+    if (!data.about.trim())          errors.about  = t("register.errorAbout");
+    if (data.skills.length === 0)    errors.skills = t("register.errorSkills");
   }
 
   if (step === 3) {
     const hasExp = data.experiences.some((r) => r.title.trim());
     const hasEdu = data.education.some((r) => r.title.trim());
-    if (!hasExp) errors.experiences = "Legg til minst én arbeidserfaring.";
-    if (!hasEdu) errors.education   = "Legg til minst én utdanning.";
+    if (!hasExp) errors.experiences = t("register.errorExp");
+    if (!hasEdu) errors.education   = t("register.errorEdu");
   }
 
   return errors;
@@ -91,6 +86,7 @@ export function RegisterPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const editSlug = searchParams.get("edit");
+  const { t } = useLanguage();
   
   const [step, setStep]       = useState(1);
   const [data, setData]       = useState<FormData>(initialData);
@@ -98,6 +94,12 @@ export function RegisterPage() {
   const [skillInput, setSkillInput] = useState("");
   const [submitted, setSubmitted]   = useState(false);
   const { user } = useAuth();
+
+  const STEPS = [
+    { id: 1, label: t("register.step1"),    icon: "👤" },
+    { id: 2, label: t("register.step2"),       icon: "💡" },
+    { id: 3, label: t("register.step3"), icon: "🎓" },
+  ];
 
   useEffect(() => {
     if (editSlug) {
@@ -169,8 +171,19 @@ export function RegisterPage() {
     }
   };
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        set("image", reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const goNext = () => {
-    const stepErrors = validateStep(step, data);
+    const stepErrors = validateStep(step, data, t);
     if (Object.keys(stepErrors).length > 0) { setErrors(stepErrors); return; }
     setErrors({});
     setStep((s) => s + 1);
@@ -178,7 +191,7 @@ export function RegisterPage() {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    const stepErrors = validateStep(3, data);
+    const stepErrors = validateStep(3, data, t);
     if (Object.keys(stepErrors).length > 0) { setErrors(stepErrors); return; }
 
     const skillsText    = data.skills.join("\n");
@@ -213,8 +226,8 @@ export function RegisterPage() {
       <div className="flex min-h-[60vh] items-center justify-center px-6 py-20">
         <div className="space-y-4 text-center">
           <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full text-4xl bg-indigo-100">🎉</div>
-          <h2 className="text-2xl font-extrabold text-slate-900">Portefølje opprettet!</h2>
-          <p className="text-slate-600">Du blir videresendt…</p>
+          <h2 className="text-2xl font-extrabold text-slate-900">{t("register.successTitle")}</h2>
+          <p className="text-slate-600">{t("register.successDesc")}</p>
         </div>
       </div>
     );
@@ -227,13 +240,13 @@ export function RegisterPage() {
         {/* Title */}
         <div className="mb-10 text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-indigo-100 bg-indigo-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-indigo-600">
-            ✨ Porteføljebygger
+            {t("register.badge")}
           </span>
           <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-            {editSlug ? "Rediger portefølje" : "Opprett din digitale portefølje"}
+            {editSlug ? t("register.titleEdit") : t("register.titleCreate")}
           </h1>
           <p className="mx-auto mt-3 max-w-lg text-sm text-slate-600">
-            Fyll inn tre enkle steg og porteføljesiden din er klar med én gang.
+            {t("register.subtitle")}
           </p>
         </div>
 
@@ -272,7 +285,7 @@ export function RegisterPage() {
           <div className="border-b border-indigo-100 bg-indigo-50/50 px-8 py-7">
             <p className="text-2xl">{STEPS[step - 1].icon}</p>
             <h2 className="mt-1 text-xl font-extrabold text-slate-900">
-              Steg {step} — {STEPS[step - 1].label}
+              {t("register.stepPrefix")} {step} — {STEPS[step - 1].label}
             </h2>
           </div>
 
@@ -284,22 +297,22 @@ export function RegisterPage() {
                 <>
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div>
-                      <label className={labelCls}>Fornavn *</label>
-                      <input className={field("firstName")} placeholder="Boishakhi"
+                      <label className={labelCls}>{t("register.firstName")}</label>
+                      <input className={field("firstName")} placeholder={t("register.firstNamePlaceholder")}
                         value={data.firstName}
                         onChange={(e) => { set("firstName", e.target.value); clearError("firstName"); }} />
                       {errors.firstName && <p className="mt-1 text-xs text-red-500">{errors.firstName}</p>}
                     </div>
                     <div>
-                      <label className={labelCls}>Etternavn</label>
-                      <input className={inputCls} placeholder="Ghosh"
+                      <label className={labelCls}>{t("register.lastName")}</label>
+                      <input className={inputCls} placeholder={t("register.lastNamePlaceholder")}
                         value={data.lastName} onChange={(e) => set("lastName", e.target.value)} />
                     </div>
                   </div>
 
                   <div>
-                    <label className={labelCls}>Yrkestittel *</label>
-                    <input className={field("title")} placeholder="Frontend-utvikler"
+                    <label className={labelCls}>{t("register.title")}</label>
+                    <input className={field("title")} placeholder={t("register.titlePlaceholder")}
                       value={data.title}
                       onChange={(e) => { set("title", e.target.value); clearError("title"); }} />
                     {errors.title && <p className="mt-1 text-xs text-red-500">{errors.title}</p>}
@@ -307,57 +320,58 @@ export function RegisterPage() {
 
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div>
-                      <label className={labelCls}>E-post *</label>
-                      <input type="email" className={field("email")} placeholder="deg@eksempel.no"
+                      <label className={labelCls}>{t("register.email")}</label>
+                      <input type="email" className={field("email")} placeholder={t("register.emailPlaceholder")}
                         value={data.email}
                         onChange={(e) => { set("email", e.target.value); clearError("email"); }} />
                       {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email}</p>}
                     </div>
                     <div>
-                      <label className={labelCls}>Telefon</label>
-                      <input type="tel" className={inputCls} placeholder="+47 000 00 000"
+                      <label className={labelCls}>{t("register.phone")}</label>
+                      <input type="tel" className={inputCls} placeholder={t("register.phonePlaceholder")}
                         value={data.phone} onChange={(e) => set("phone", e.target.value)} />
                     </div>
                   </div>
 
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div>
-                      <label className={labelCls}>Sted *</label>
-                      <input className={field("location")} placeholder="Oslo, Norge"
+                      <label className={labelCls}>{t("register.location")}</label>
+                      <input className={field("location")} placeholder={t("register.locationPlaceholder")}
                         value={data.location}
                         onChange={(e) => { set("location", e.target.value); clearError("location"); }} />
                       {errors.location && <p className="mt-1 text-xs text-red-500">{errors.location}</p>}
                     </div>
                     <div>
-                      <label className={labelCls}>Fødselsdato</label>
-                      <input className={inputCls} placeholder="15. april 1996"
+                      <label className={labelCls}>{t("register.birthDate")}</label>
+                      <input className={inputCls} placeholder={t("register.birthDatePlaceholder")}
                         value={data.birthDate} onChange={(e) => set("birthDate", e.target.value)} />
                     </div>
                   </div>
 
                   <div>
-                    <label className={labelCls}>Profilbilde (URL)</label>
-                    <input className={inputCls} placeholder="https://eksempel.no/bilde.jpg"
-                      value={data.image} onChange={(e) => set("image", e.target.value)} />
-                    {data.image && (
-                      <div className="mt-3 flex items-center gap-3">
+                    <label className={labelCls}>{t("register.photoUpload")}</label>
+                    <div className="mt-1 flex items-center gap-4">
+                      {data.image && (
                         <img src={data.image} alt="forhåndsvisning"
-                          className="h-14 w-14 rounded-2xl border border-slate-200 object-cover"
+                          className="h-16 w-16 rounded-full border-2 border-indigo-100 object-cover shadow-sm"
                           onError={(e) => (e.currentTarget.style.display = "none")} />
-                        <span className="text-xs text-slate-400">Forhåndsvisning</span>
-                      </div>
-                    )}
+                      )}
+                      <label className="cursor-pointer rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 px-6 py-4 text-sm font-medium text-slate-600 transition hover:border-indigo-400 hover:bg-indigo-50 hover:text-indigo-700 flex-1 text-center">
+                        {t("register.uploadPrompt")}
+                        <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+                      </label>
+                    </div>
                   </div>
 
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div>
-                      <label className={labelCls}>LinkedIn-profil</label>
-                      <input className={inputCls} placeholder="https://linkedin.com/in/ditt-navn"
+                      <label className={labelCls}>{t("register.linkedin")}</label>
+                      <input className={inputCls} placeholder={t("register.linkedinPlaceholder")}
                         value={data.linkedin} onChange={(e) => set("linkedin", e.target.value)} />
                     </div>
                     <div>
-                      <label className={labelCls}>GitHub-profil</label>
-                      <input className={inputCls} placeholder="https://github.com/ditt-navn"
+                      <label className={labelCls}>{t("register.github")}</label>
+                      <input className={inputCls} placeholder={t("register.githubPlaceholder")}
                         value={data.github} onChange={(e) => set("github", e.target.value)} />
                     </div>
                   </div>
@@ -368,28 +382,28 @@ export function RegisterPage() {
               {step === 2 && (
                 <>
                   <div>
-                    <label className={labelCls}>Kort introduksjon *</label>
-                    <p className="mb-2 text-xs text-slate-400">Vises øverst på porteføljesiden (1–2 setninger)</p>
+                    <label className={labelCls}>{t("register.introTitle")}</label>
+                    <p className="mb-2 text-xs text-slate-400">{t("register.introSubtitle")}</p>
                     <textarea rows={3} className={field("intro") + " resize-none"}
-                      placeholder="Frontend-utvikler med lidenskap for rene grensesnitt og gode brukeropplevelser."
+                      placeholder={t("register.introPlaceholder")}
                       value={data.intro}
                       onChange={(e) => { set("intro", e.target.value); clearError("intro"); }} />
                     {errors.intro && <p className="mt-1 text-xs text-red-500">{errors.intro}</p>}
                   </div>
 
                   <div>
-                    <label className={labelCls}>Om meg *</label>
-                    <p className="mb-2 text-xs text-slate-400">En lengre beskrivelse av din bakgrunn og interesser</p>
+                    <label className={labelCls}>{t("register.aboutTitle")}</label>
+                    <p className="mb-2 text-xs text-slate-400">{t("register.aboutSubtitle")}</p>
                     <textarea rows={5} className={field("about") + " resize-none"}
-                      placeholder="Jeg liker å bygge brukervennlige nettsider og er spesielt interessert i frontend og testing…"
+                      placeholder={t("register.aboutPlaceholder")}
                       value={data.about}
                       onChange={(e) => { set("about", e.target.value); clearError("about"); }} />
                     {errors.about && <p className="mt-1 text-xs text-red-500">{errors.about}</p>}
                   </div>
 
                   <div>
-                    <label className={labelCls}>Ferdigheter *</label>
-                    <p className="mb-2 text-xs text-slate-400">Skriv en ferdighet og trykk Enter, eller klikk på et forslag</p>
+                    <label className={labelCls}>{t("register.skillsTitle")}</label>
+                    <p className="mb-2 text-xs text-slate-400">{t("register.skillsSubtitle")}</p>
                     <div className={[
                       "flex flex-wrap gap-2 rounded-xl border bg-white px-4 py-3 transition focus-within:ring-4 shadow-sm",
                       errors.skills
@@ -404,7 +418,7 @@ export function RegisterPage() {
                       ))}
                       <input
                         className="min-w-[120px] flex-1 bg-transparent text-sm outline-none placeholder-slate-400"
-                        placeholder="Legg til ferdighet…"
+                        placeholder={t("register.skillsPlaceholder")}
                         value={skillInput}
                         onChange={(e) => setSkillInput(e.target.value)}
                         onKeyDown={handleSkillKey}
@@ -429,10 +443,10 @@ export function RegisterPage() {
                   {/* Experiences */}
                   <div>
                     <div className="mb-3 flex items-center justify-between">
-                      <label className={labelCls + " mb-0"}>Arbeidserfaring *</label>
+                      <label className={labelCls + " mb-0"}>{t("register.expTitle")}</label>
                       <button type="button" onClick={() => addRow("experiences")}
                         className="text-xs font-semibold text-indigo-600 transition hover:text-indigo-800">
-                        + Legg til rad
+                        {t("register.addBtn")}
                       </button>
                     </div>
                     {errors.experiences && <p className="mb-2 text-xs text-red-500">{errors.experiences}</p>}
@@ -445,24 +459,24 @@ export function RegisterPage() {
                           )}
                           <div className="grid gap-3 sm:grid-cols-2">
                             <div>
-                              <label className={labelCls}>Stilling *</label>
-                              <input className={inputCls} placeholder="Frontend-utvikler"
+                              <label className={labelCls}>{t("register.jobTitle")}</label>
+                              <input className={inputCls} placeholder={t("register.jobTitlePlaceholder")}
                                 value={row.title} onChange={(e) => { setRow("experiences", idx, "title", e.target.value); clearError("experiences"); }} />
                             </div>
                             <div>
-                              <label className={labelCls}>Bedrift / Organisasjon</label>
-                              <input className={inputCls} placeholder="Acme AS"
+                              <label className={labelCls}>{t("register.company")}</label>
+                              <input className={inputCls} placeholder={t("register.companyPlaceholder")}
                                 value={row.org} onChange={(e) => setRow("experiences", idx, "org", e.target.value)} />
                             </div>
                           </div>
                           <div>
-                            <label className={labelCls}>Periode</label>
-                            <input className={inputCls} placeholder="jan. 2023 – nå"
+                            <label className={labelCls}>{t("register.period")}</label>
+                            <input className={inputCls} placeholder={t("register.periodPlaceholder")}
                               value={row.period} onChange={(e) => setRow("experiences", idx, "period", e.target.value)} />
                           </div>
                           <div>
-                            <label className={labelCls}>Beskrivelse</label>
-                            <textarea rows={2} className={inputCls + " resize-none"} placeholder="Hva bidro du med?"
+                            <label className={labelCls}>{t("register.description")}</label>
+                            <textarea rows={2} className={inputCls + " resize-none"} placeholder={t("register.descriptionExpPlaceholder")}
                               value={row.summary} onChange={(e) => setRow("experiences", idx, "summary", e.target.value)} />
                           </div>
                         </div>
@@ -473,10 +487,10 @@ export function RegisterPage() {
                   {/* Education */}
                   <div>
                     <div className="mb-3 flex items-center justify-between">
-                      <label className={labelCls + " mb-0"}>Utdanning *</label>
+                      <label className={labelCls + " mb-0"}>{t("register.eduTitle")}</label>
                       <button type="button" onClick={() => addRow("education")}
                         className="text-xs font-semibold text-indigo-600 transition hover:text-indigo-800">
-                        + Legg til rad
+                        {t("register.addBtn")}
                       </button>
                     </div>
                     {errors.education && <p className="mb-2 text-xs text-red-500">{errors.education}</p>}
@@ -489,24 +503,24 @@ export function RegisterPage() {
                           )}
                           <div className="grid gap-3 sm:grid-cols-2">
                             <div>
-                              <label className={labelCls}>Grad / Sertifikat *</label>
-                              <input className={inputCls} placeholder="MSc Informatikk"
+                              <label className={labelCls}>{t("register.degree")}</label>
+                              <input className={inputCls} placeholder={t("register.degreePlaceholder")}
                                 value={row.title} onChange={(e) => { setRow("education", idx, "title", e.target.value); clearError("education"); }} />
                             </div>
                             <div>
-                              <label className={labelCls}>Skole / Institusjon</label>
-                              <input className={inputCls} placeholder="Østfold Universitetshøgskole"
+                              <label className={labelCls}>{t("register.school")}</label>
+                              <input className={inputCls} placeholder={t("register.schoolPlaceholder")}
                                 value={row.org} onChange={(e) => setRow("education", idx, "org", e.target.value)} />
                             </div>
                           </div>
                           <div>
-                            <label className={labelCls}>Periode</label>
-                            <input className={inputCls} placeholder="2022 – 2025"
+                            <label className={labelCls}>{t("register.period")}</label>
+                            <input className={inputCls} placeholder={t("register.periodPlaceholder")}
                               value={row.period} onChange={(e) => setRow("education", idx, "period", e.target.value)} />
                           </div>
                           <div>
-                            <label className={labelCls}>Beskrivelse</label>
-                            <textarea rows={2} className={inputCls + " resize-none"} placeholder="Hva studerte du?"
+                            <label className={labelCls}>{t("register.description")}</label>
+                            <textarea rows={2} className={inputCls + " resize-none"} placeholder={t("register.descriptionEduPlaceholder")}
                               value={row.summary} onChange={(e) => setRow("education", idx, "summary", e.target.value)} />
                           </div>
                         </div>
@@ -522,19 +536,19 @@ export function RegisterPage() {
               {step > 1 ? (
                 <button type="button" onClick={() => setStep((s) => s - 1)}
                   className="flex items-center gap-2 rounded-full border px-6 py-2.5 text-sm font-bold shadow-sm transition border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-100">
-                  ← Tilbake
+                  {t("register.backBtn")}
                 </button>
               ) : <span />}
 
               {step < STEPS.length ? (
                 <button type="button" onClick={goNext}
                   className="rounded-full bg-indigo-600 px-8 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition hover:-translate-y-0.5 hover:bg-indigo-700">
-                  Fortsett →
+                  {t("register.nextBtn")}
                 </button>
               ) : (
                 <button type="submit"
                   className="rounded-full bg-gradient-to-r from-indigo-600 to-violet-600 px-8 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-300 transition hover:-translate-y-0.5">
-                  {editSlug ? "Lagre endringer" : "🚀 Opprett min portefølje"}
+                  {editSlug ? t("register.saveChanges") : t("register.createBtn")}
                 </button>
               )}
             </div>
@@ -542,7 +556,7 @@ export function RegisterPage() {
         </div>
 
         <p className="mt-6 text-center text-xs text-slate-400">
-          Steg {step} av {STEPS.length} — {STEPS[step - 1].label}
+          {t("register.stepPrefix")} {step} {t("register.stepOf")} {STEPS.length} — {STEPS[step - 1].label}
         </p>
       </div>
     </div>

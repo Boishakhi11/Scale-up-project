@@ -50,6 +50,12 @@ export const baseCandidates: Candidate[] = [
   { name: "Vinithra", title: "Programvareutvikler", image: "/Images/image/VIni.jpeg", slug: "vinithra" },
   { name: "Aarcha", title: "PhD, Forsker", image: "/Images/image/archa.jpeg", slug: "aarcha" },
   { name: "Soumya", title: "Dataanalytiker", image: "/Images/image/smoya.jpeg", slug: "soumya" },
+  { name: "Kristine", title: "Prosjektleder", image: "/Images/image/woman.png", slug: "kristine" },
+  { name: "Amalie", title: "UX Designer", image: "/Images/image/woman.png", slug: "amalie" },
+  { name: "Sofia", title: "Frontend Utvikler", image: "/Images/image/woman.png", slug: "sofia" },
+  { name: "Nora", title: "Backend Utvikler", image: "/Images/image/woman.png", slug: "nora" },
+  { name: "Ingrid", title: "DevOps Engineer", image: "/Images/image/woman.png", slug: "ingrid" },
+  { name: "Maria", title: "Sikkerhetsanalytiker", image: "/Images/image/woman.png", slug: "maria" },
 ];
 
 export const staticPortfolios: PortfolioRecord[] = [
