@@ -57,4 +57,4 @@ The application is configured to be easily deployed to Netlify:
 - **Publish Directory:** `dist`
 - Ensure you set up your Environment Variables in the Netlify dashboard under **Site Settings > Environment Variables**.
 
-For Admin Login Use: admin@gmail.com / admin123
+
