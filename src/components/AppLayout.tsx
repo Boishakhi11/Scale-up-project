@@ -88,7 +88,7 @@ export function AppLayout() {
                       }}
                       className="px-4 py-2 text-sm text-left font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-700"
                     >
-                      Profil
+                      {t("layout.profile")}
                     </button>
                     <button
                       onClick={() => {
@@ -108,7 +108,7 @@ export function AppLayout() {
                       }}
                       className="px-4 py-2 text-sm text-left font-semibold text-red-600 hover:bg-red-50"
                     >
-                      Logg ut
+                      {t("layout.logout")}
                     </button>
                   </div>
                 )}
@@ -118,7 +118,7 @@ export function AppLayout() {
                 onClick={() => navigate("/login")}
                 className="rounded-full bg-gradient-to-r from-indigo-500 to-indigo-600 px-5 py-2 text-xs font-bold text-white shadow-md transition-all hover:from-indigo-600 hover:to-indigo-700 hover:shadow-lg hover:-translate-y-0.5"
               >
-                Logg inn
+                {t("layout.login")}
               </button>
             )}
 

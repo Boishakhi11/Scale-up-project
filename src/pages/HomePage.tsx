@@ -38,7 +38,7 @@ export function HomePage() {
     });
   };
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = (e: { preventDefault(): void }) => {
     e.preventDefault();
     if (!subscribeEmail) return;
     
@@ -126,7 +126,7 @@ export function HomePage() {
 
             return (
               <article
-                key={candidate.name}
+                key={candidate.slug ?? candidate.name}
                 className="card-lift animate-fade-up flex flex-col rounded-3xl border-2 border-b-8 border-r-8 border-slate-200 bg-white px-6 py-8 text-center shadow-md transition-all hover:shadow-xl hover:-translate-y-1"
               >
                 <img
@@ -155,13 +155,13 @@ export function HomePage() {
                         onClick={() => navigate(`/register?edit=${candidate.slug}`)}
                         className="rounded-full bg-amber-50 px-3 py-2 text-xs font-bold text-amber-700 transition hover:bg-amber-100"
                       >
-                        Rediger
+                        {t("home.editBtn")}
                       </button>
                       <button
                         onClick={() => handleDelete(candidate.slug!)}
                         className="rounded-full bg-red-50 px-3 py-2 text-xs font-bold text-red-700 transition hover:bg-red-100"
                       >
-                        Slett
+                        {t("home.deleteBtn")}
                       </button>
                     </div>
                   )}

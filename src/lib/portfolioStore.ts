@@ -76,7 +76,14 @@ export function readSavedPortfolios(): PortfolioRecord[] {
 }
 
 function writeSavedPortfolios(portfolios: PortfolioRecord[]) {
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(portfolios));
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(portfolios));
+  } catch (e) {
+    if (e instanceof DOMException && e.name === "QuotaExceededError") {
+      throw new Error("Lagringsplass er full. Prøv å bruke et mindre bilde.");
+    }
+    throw e;
+  }
   window.dispatchEvent(new Event(STORAGE_EVENT));
 }
 

@@ -1,6 +1,12 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
-import { onAuthStateChanged, signInWithPopup, signOut as firebaseSignOut } from "firebase/auth";
-import { auth, googleProvider, githubProvider } from "./firebase";
+import {
+  onAuthStateChanged,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  signOut as firebaseSignOut,
+} from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db, googleProvider, githubProvider } from "./firebase";
 
 export type Role = "candidate" | "admin";
 
@@ -17,27 +23,36 @@ interface AuthContextType {
   loading: boolean;
   loginWithGoogle: () => Promise<void>;
   loginWithGithub: () => Promise<void>;
-  loginWithEmail: (role: Role, email: string) => void;
+  loginWithEmailPassword: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+async function resolveRole(uid: string): Promise<Role> {
+  try {
+    const snap = await getDoc(doc(db, "roles", uid));
+    if (snap.exists() && snap.data()?.admin === true) return "admin";
+  } catch {
+    // Firestore unavailable — default to candidate
+  }
+  return "candidate";
+}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
-        // Retrieve stored role or default to candidate
-        const savedRole = localStorage.getItem("authRole") as Role | null;
+        const role = await resolveRole(firebaseUser.uid);
         setUser({
           uid: firebaseUser.uid,
           name: firebaseUser.displayName || firebaseUser.email?.split("@")[0] || "Ukjent",
           email: firebaseUser.email || "",
           photo: firebaseUser.photoURL || undefined,
-          role: savedRole || "candidate",
+          role,
         });
       } else {
         setUser(null);
@@ -49,35 +64,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const loginWithGoogle = async () => {
-    localStorage.setItem("authRole", "candidate");
     await signInWithPopup(auth, googleProvider);
   };
 
   const loginWithGithub = async () => {
-    localStorage.setItem("authRole", "candidate");
     await signInWithPopup(auth, githubProvider);
   };
 
-  const loginWithEmail = (role: Role, email: string) => {
-    // Fallback for simple email without password validation (mock)
-    // If you want real email auth: createUserWithEmailAndPassword(auth, email, password)
-    localStorage.setItem("authRole", role);
-    setUser({
-      uid: "mock-" + Date.now(),
-      name: email.split("@")[0],
-      role,
-      email,
-    });
+  const loginWithEmailPassword = async (email: string, password: string) => {
+    await signInWithEmailAndPassword(auth, email, password);
+    // role is set by the onAuthStateChanged listener above
   };
 
   const logout = async () => {
-    localStorage.removeItem("authRole");
     await firebaseSignOut(auth);
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, loginWithGoogle, loginWithGithub, loginWithEmail, logout }}>
+    <AuthContext.Provider value={{ user, loading, loginWithGoogle, loginWithGithub, loginWithEmailPassword, logout }}>
       {!loading && children}
     </AuthContext.Provider>
   );

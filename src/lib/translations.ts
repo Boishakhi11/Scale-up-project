@@ -10,6 +10,9 @@ export const translations = {
     layout: {
       footerDesc: "Digital portefølje for kandidater, samarbeid og synlighet.",
       copyright: "Kopirett ©",
+      profile: "Profil",
+      logout: "Logg ut",
+      login: "Logg inn",
     },
     home: {
       badge: "Scale Up Digital Portefølje",
@@ -30,6 +33,8 @@ export const translations = {
       ourCandidatesSubtitle: "Her kan du bli bedre kjent med våre flotte kandidater gjennom Digital Portfolio.",
       portfolioBtn: "PORTEFØLJE",
       comingSoon: "Kommer snart",
+      editBtn: "Rediger",
+      deleteBtn: "Slett",
       subscribeTitle: "Fra Potensial til Praksis",
       subscribeSubtitle: "Hold deg oppdatert på prosjektet, kandidater og nye muligheter for samarbeid.",
       emailPlaceholder: "Skriv inn e-postadressen din",
@@ -70,7 +75,8 @@ export const translations = {
       readyToBuild: "Klar for å bygge noe?",
       letsTalk: "La oss snakke",
       poweredBy: "Drevet av Nettverkshuset",
-      allRightsReserved: "Med enerett."
+      allRightsReserved: "Med enerett.",
+      backToApp: "← Scale Up",
     },
     login: {
       title: "Logg inn",
@@ -168,6 +174,9 @@ export const translations = {
     layout: {
       footerDesc: "Digital portfolio for candidates, collaboration, and visibility.",
       copyright: "Copyright ©",
+      profile: "Profile",
+      logout: "Log out",
+      login: "Log in",
     },
     home: {
       badge: "Scale Up Digital Portfolio",
@@ -188,6 +197,8 @@ export const translations = {
       ourCandidatesSubtitle: "Here you can get to know our great candidates better through Digital Portfolio.",
       portfolioBtn: "PORTFOLIO",
       comingSoon: "Coming Soon",
+      editBtn: "Edit",
+      deleteBtn: "Delete",
       subscribeTitle: "From Potential to Practice",
       subscribeSubtitle: "Stay updated on the project, candidates and new opportunities for collaboration.",
       emailPlaceholder: "Write your email address",
@@ -228,7 +239,8 @@ export const translations = {
       readyToBuild: "Ready to build something?",
       letsTalk: "Let's talk",
       poweredBy: "Powered by Nettverkshuset",
-      allRightsReserved: "All rights reserved."
+      allRightsReserved: "All rights reserved.",
+      backToApp: "← Scale Up",
     },
     login: {
       title: "Log in",

@@ -1,4 +1,4 @@
-import { FormEvent, KeyboardEvent, useState, useEffect } from "react";
+import { KeyboardEvent, useState, useEffect } from "react";
 import { useNavigate, Navigate, useSearchParams } from "react-router-dom";
 import { createPortfolio, getPortfolioBySlug } from "../lib/portfolioStore";
 import { useAuth } from "../lib/AuthContext";
@@ -102,29 +102,33 @@ export function RegisterPage() {
   ];
 
   useEffect(() => {
-    if (editSlug) {
-      const existing = getPortfolioBySlug(editSlug);
-      if (existing) {
-        setData({
-          firstName: existing.firstName,
-          lastName: existing.lastName,
-          title: existing.title,
-          email: existing.email,
-          phone: existing.phone,
-          location: existing.location,
-          birthDate: existing.birthDate,
-          image: existing.image,
-          linkedin: "",
-          github: "",
-          intro: existing.intro,
-          about: existing.about,
-          skills: existing.skills.map(s => s.name),
-          experiences: existing.experiences.length ? existing.experiences : [emptyRow()],
-          education: existing.education.length ? existing.education : [emptyRow()],
-        });
-      }
+    if (!editSlug || !user) return;
+    const existing = getPortfolioBySlug(editSlug);
+    if (!existing) return;
+
+    if (existing.email !== user.email && user.role !== "admin") {
+      navigate("/", { replace: true });
+      return;
     }
-  }, [editSlug]);
+
+    setData({
+      firstName: existing.firstName,
+      lastName: existing.lastName,
+      title: existing.title,
+      email: existing.email,
+      phone: existing.phone,
+      location: existing.location,
+      birthDate: existing.birthDate,
+      image: existing.image,
+      linkedin: existing.linkedin ?? "",
+      github: existing.github ?? "",
+      intro: existing.intro,
+      about: existing.about,
+      skills: existing.skills.map(s => s.name),
+      experiences: existing.experiences.length ? existing.experiences : [emptyRow()],
+      education: existing.education.length ? existing.education : [emptyRow()],
+    });
+  }, [editSlug, user, navigate]);
 
   if (!user) {
     return <Navigate to="/login" replace />;
@@ -173,13 +177,15 @@ export function RegisterPage() {
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        set("image", reader.result as string);
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      Swal.fire({ title: "Feil", text: "Bildet er for stort. Maks 2 MB.", icon: "error" });
+      e.target.value = "";
+      return;
     }
+    const reader = new FileReader();
+    reader.onloadend = () => { set("image", reader.result as string); };
+    reader.readAsDataURL(file);
   };
 
   const goNext = () => {
@@ -189,7 +195,7 @@ export function RegisterPage() {
     setStep((s) => s + 1);
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = (e: { preventDefault(): void }) => {
     e.preventDefault();
     const stepErrors = validateStep(3, data, t);
     if (Object.keys(stepErrors).length > 0) { setErrors(stepErrors); return; }
@@ -204,14 +210,20 @@ export function RegisterPage() {
       .map((r) => `${r.title} | ${r.org} | ${r.period} | ${r.summary}`)
       .join("\n");
 
-    const portfolio = createPortfolio({
-      firstName: data.firstName, lastName: data.lastName,
-      title: data.title, email: data.email, phone: data.phone,
-      location: data.location, birthDate: data.birthDate, image: data.image,
-      linkedin: data.linkedin, github: data.github,
-      intro: data.intro, about: data.about,
-      skillsText, experienceText, educationText,
-    }, editSlug || undefined);
+    let portfolio;
+    try {
+      portfolio = createPortfolio({
+        firstName: data.firstName, lastName: data.lastName,
+        title: data.title, email: data.email, phone: data.phone,
+        location: data.location, birthDate: data.birthDate, image: data.image,
+        linkedin: data.linkedin, github: data.github,
+        intro: data.intro, about: data.about,
+        skillsText, experienceText, educationText,
+      }, editSlug || undefined);
+    } catch (err: any) {
+      Swal.fire({ title: "Feil", text: err.message || "Noe gikk galt. Prøv igjen.", icon: "error" });
+      return;
+    }
 
     Swal.fire({
       title: "Suksess!",
